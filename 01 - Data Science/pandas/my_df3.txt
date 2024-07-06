@@ -1,0 +1,5 @@
+	Name	Age	Gender
+A	Trần Đức A	5	M
+B	Lê Thị B	3	F
+C	Nguyễn Văn C	7	M
+D	Đào Thị D	9	F
