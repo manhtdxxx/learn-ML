@@ -1,5 +1,6 @@
 import numpy as np
 
+
 ###
 def initialize_params(units_each_layer: list[int]):
     np.random.seed(42)
@@ -161,6 +162,7 @@ def backward(Y, Y_pred, caches):  # Y shape (n_samples, )
     return grads
 
 
+###
 def update_params(params, grads, learning_rate=0.01):
     L = len(params) // 2
     for i in range(1, L+1):
