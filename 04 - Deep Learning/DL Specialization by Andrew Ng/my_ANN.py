@@ -3,13 +3,12 @@ import numpy as np
 
 ###
 def initialize_params(units_each_layer: list[int]):
-    np.random.seed(42)
-
     params = {}
-    L = len(units_each_layer)  # number of layers
-    for i in range(1, L):
-        params[f'W{i}'] = np.random.randn(units_each_layer[i], units_each_layer[i-1]) * 0.01  # mean=0, std=0.01
-        params[f'b{i}'] = np.zeros(shape=(units_each_layer[i], 1))
+    L_including_inputLayer = len(units_each_layer)  # number of layers including the input layer
+    for i in range(1, L_including_inputLayer):
+        params[f'W{i}'] = np.random.randn(units_each_layer[i], units_each_layer[i-1]) / np.sqrt(units_each_layer[i-1])  # mean=0, std=...
+        params[f'B{i}'] = np.zeros(shape=(units_each_layer[i], 1))
+
     return params
 
 
@@ -47,21 +46,21 @@ def forward_through_activation(A_prev, W, B, activation):
 
 def forward(X, params):
     A = X  # X is the initial A
-    L = len(params) // 2  # each layer linked with 2 params W, B
+    L = len(params) // 2  # each hidden layer and output layer linked with 2 params W, B
+    # L doesn't include the input layer, diff from L in initialize_params() func which is = L(of this func) + 1 
     
     caches = []
     
     # Forward Pass in Hidden Layers
-    for i in range(1, L):
+    for i in range(1, L): 
         A_prev = A
         W, B = params[f'W{i}'], params[f'B{i}']
-        
         A, cache = forward_through_activation(A_prev, W, B, activation='relu')
         caches.append(cache)
 
     # Forward Pass in Output Layer
     W, B = params[f'W{L}'], params[f'B{L}']
-    Y_pred, cache = forward_through_activation(A_prev, W, B, activation='sigmoid')
+    Y_pred, cache = forward_through_activation(A, W, B, activation='sigmoid')
     caches.append(cache)
 
     return Y_pred, caches
@@ -83,6 +82,7 @@ def backward_through_costFunc(Y, Y_pred, cost_func):
     """
     if cost_func == 'binary_cross_entropy':
         dY_pred = - (np.divide(Y, Y_pred) - np.divide(1-Y, 1-Y_pred))
+        dY_pred = dY_pred.reshape(Y_pred.shape)
     return dY_pred
 
 
@@ -118,8 +118,8 @@ def backward_linearly(dZ, linear_cache):
     
     n_samples = A_prev.shape[1]
     
-    dW = (1/m) * (dZ @ A_prev.T)  # (n_features_out, n_samples) @ (n_samples, n_features_in)
-    dB = (1/m) * np.sum(dZ, axis=1, keepdims=True)  # sum all samples each row of (n_features_out, n_samples)
+    dW = (1/n_samples) * (dZ @ A_prev.T)  # (n_features_out, n_samples) @ (n_samples, n_features_in)
+    dB = (1/n_samples) * np.sum(dZ, axis=1, keepdims=True)  # sum all samples each row of (n_features_out, n_samples)
     dA_prev = W.T @ dZ  # (n_features_in, n_features_out) @ (n_features_out, n_samples)
 
     return dA_prev, dW, dB
@@ -154,7 +154,7 @@ def backward(Y, Y_pred, caches):  # Y shape (n_samples, )
     for i in range(L-1, 0, -1):  # from L-1 to 1
         dA = dA_prev
         current_cache = caches[i-1]  # from cache[L-2] to cache[0]
-        dA_prev, dW, dB = backward_each_layer(dA, current_cache, activation='sigmoid')
+        dA_prev, dW, dB = backward_each_layer(dA, current_cache, activation='relu')
         grads[f'dA{i-1}'] = dA_prev  # to dA0
         grads[f'dW{i}'] = dW
         grads[f'dB{i}'] = dB
@@ -165,7 +165,7 @@ def backward(Y, Y_pred, caches):  # Y shape (n_samples, )
 ###
 def update_params(params, grads, learning_rate=0.01):
     L = len(params) // 2
-    for i in range(1, L+1):
+    for i in range(1, L+1):  # from 1 to L
         params[f'W{i}'] = params[f'W{i}'] - learning_rate * grads[f'dW{i}']
         params[f'B{i}'] = params[f'B{i}'] - learning_rate * grads[f'dB{i}']
 
