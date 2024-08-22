@@ -170,3 +170,22 @@ def update_params(params, grads, learning_rate=0.01):
         params[f'B{i}'] = params[f'B{i}'] - learning_rate * grads[f'dB{i}']
 
     return params
+
+
+###
+def predict(X, params):
+    Y_pred, _ = forward(X, params)
+    Y_pred = np.where(Y_pred > 0.5, 1, 0)
+    return Y_pred
+
+
+###
+def score(Y, Y_pred):
+    """
+    Y: (n_samples, )
+    Y_pred: (n_samples, )
+    """
+    n_samples = len(Y)
+    diff = (Y == Y_pred).astype('int')
+    accuracy = np.sum(diff) / n_samples
+    return accuracy
