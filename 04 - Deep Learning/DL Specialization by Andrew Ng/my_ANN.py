@@ -15,6 +15,7 @@ def initialize_params(units_each_layer: list[int]):
 ###
 def sigmoid(Z):
     A = 1 / (1 + np.exp(-Z))
+    A = np.clip(A, 1e-7, 1-1e-7)
     cache = Z
     return A, cache
 
@@ -94,7 +95,7 @@ def backward_through_activation(dA, activation_cache, activation):
     Z = activation_cache
     
     if activation == 'sigmoid':
-        p = 1 / (1 + np.exp(-Z))
+        p, _ = sigmoid(Z)
         dA_dZ = p * (1 - p)
         dZ = dA * dA_dZ
 
