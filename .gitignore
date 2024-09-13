@@ -1,6 +1,7 @@
 .idea
 .ipynb_checkpoints
 datasets/
+*_dataset/
 logs/
 05 - Computer Vision/my_camera/
 kaggle.json
