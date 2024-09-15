@@ -1,6 +1,6 @@
-.idea
-.ipynb_checkpoints
+.idea/
+.ipynb_checkpoints/
+__pycache__/
 *_dataset/
 logs/
-05 - Computer Vision/my_camera/
-kaggle.json
+my_camera/
