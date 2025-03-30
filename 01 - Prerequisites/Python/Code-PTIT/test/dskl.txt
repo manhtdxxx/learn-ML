@@ -1,0 +1,2 @@
+|     Mã sinh viên     |           Họ và tên            |    Điểm tích lũy     | Số tín chỉ chưa đạt  |
+|      B22DCTC070      |         Trần Đức Mạnh          |         2.8          |          5           |

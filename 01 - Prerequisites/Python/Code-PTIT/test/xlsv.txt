@@ -1,0 +1,3 @@
+|    Mã sinh viên     |           Họ và tên            |  Điểm tích lũy  |       Xếp loại       |
+|     B22DCTC070      |         Trần Đức Mạnh          |       3.2       |         GIỎI         |
+|     B22DCTC070      |         Trần Đức Mạnh          |       3.6       |       XUẤT SẮC       |

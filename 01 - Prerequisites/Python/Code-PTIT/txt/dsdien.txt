@@ -1,0 +1,1 @@
+|  Số phòng  | Mã tòa nhà |    Tên chủ hộ     |   Số Kwh   |     Tổng tiền     |
