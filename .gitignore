@@ -5,3 +5,5 @@ __pycache__/
 logs/
 my_camera/
 yolo.h5
+model/
+**/model/
