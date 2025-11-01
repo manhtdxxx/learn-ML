@@ -1,9 +1,8 @@
 .idea/
 .ipynb_checkpoints/
 __pycache__/
-*_dataset/
-logs/
-my_camera/
-yolo.h5
-model/
+
+**/*_dataset/
+**/logs/
+**/yolo.h5
 **/model/
